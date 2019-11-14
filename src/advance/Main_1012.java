@@ -25,6 +25,7 @@ public class Main_1012 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner scan=new Scanner(System.in);
+		int[] ids=new int[1000110];
 		int N=scan.nextInt();
 		int M=scan.nextInt();
 		List<Integer> list_C=new ArrayList<Integer>();
@@ -38,6 +39,7 @@ public class Main_1012 {
 			String line=scan.nextLine();
 			String[] strs=line.split(" ");
 			String id=strs[0];
+			ids[Integer.parseInt(id)]=1;
 			int c=Integer.parseInt(strs[1]);
 			int m=Integer.parseInt(strs[2]);
 			int e=Integer.parseInt(strs[3]);
@@ -55,7 +57,7 @@ public class Main_1012 {
 		char[] chs={'C','M','E','A'};
 		for(int i=0;i<M;i++){
 			String line=scan.nextLine();
-			if(map.containsKey(line)){
+			if(ids[Integer.parseInt(line)]==1){
 				Grades g=map.get(line);
 				int c=g.c;
 				int m=g.m;
@@ -67,17 +69,17 @@ public class Main_1012 {
 					choose=3;
 					rank=list_A.indexOf(a)+1;
 				}
-				
+
 				if(rank>list_C.indexOf(c)+1){
 					choose=0;
 					rank=list_C.indexOf(c)+1;
 				}
-				
+
 				if(rank>list_M.indexOf(m)+1){
 					choose=1;
 					rank=list_M.indexOf(m)+1;
 				}
-				
+
 				if(rank>list_E.indexOf(e)+1){
 					choose=2;
 					rank=list_E.indexOf(e)+1;
