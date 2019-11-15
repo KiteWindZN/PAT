@@ -37,6 +37,7 @@ public class Main_1014 {
 		String[] strs_1=line.split(" ");
 		int[] process_time=new int[K+1];
 		int[] finish_time=new int[K+1];
+		int[] process_time_1=new int[K+1];
 		List<List<Integer>> window_list=new ArrayList<List<Integer>>();
 		int start=1;
 		for(int i=0;i<N;i++){
@@ -58,6 +59,7 @@ public class Main_1014 {
 		
 		for(int i=0;i<K;i++){
 			process_time[i+1]=Integer.parseInt(strs_1[i]);
+			process_time_1[i+1]=Integer.parseInt(strs_1[i]);
 		}
 		
 		for(int i=1;i<=540;i++){
@@ -75,7 +77,19 @@ public class Main_1014 {
 				}
 			}
 		}
-		
+
+		for(int i=0;i<N;i++){
+			if(window_list.get(i).size()==0)
+				continue;
+			int cur=window_list.get(i).get(0);
+			if(process_time[cur]==process_time_1[cur]){
+				continue;
+			}
+			if(process_time[cur]>59)
+				continue;
+			finish_time[cur]=process_time[cur]+540;
+		}
+
 		line=scan.nextLine();
 		String[] strs_2=line.split(" ");
 		for(int i=0;i<Q;i++){
