@@ -1,10 +1,7 @@
 package advance;
-
 import java.util.*;
 
-
 public class Main_1016 {
-
     static class node{
         int time=0;
         int cost=0;
@@ -28,8 +25,7 @@ public class Main_1016 {
         int total_cost=0;
         int total_min=0;
         int total_hour=(day_2-day_1)*24+(hour_2-hour_1-1);
-
-        total_cost=(60-minute_1)*costs[hour_1];
+        
         if(day_1<day_2) {
             total_cost=total_cost+(day_2-day_1-1)*cost_day(costs);
             for (int i = hour_1 + 1; i < 24; i++) {
@@ -38,12 +34,22 @@ public class Main_1016 {
             for (int i = 0; i < hour_2; i++) {
                 total_cost = total_cost + 60 * costs[i];
             }
+            total_cost=total_cost+(60-minute_1)*costs[hour_1];
+            total_cost=total_cost+costs[hour_2]*minute_2;
+            
         }else{
             for (int i = hour_1 + 1; i < hour_2; i++) {
                 total_cost = total_cost + 60 * costs[i];
             }
+            if(hour_2>hour_1){
+            	int tmp=(60-minute_1)*costs[hour_1];
+            	total_cost=total_cost+tmp;
+            	total_cost=total_cost+costs[hour_2]*minute_2;
+            }else{
+            	total_cost=total_cost+costs[hour_2]*(minute_2-minute_1);
+            }
         }
-        total_cost=total_cost+costs[hour_2]*minute_2;
+        
         total_min=total_hour*60+(60-minute_1)+minute_2;
         node nn=new node(total_min,total_cost);
         return nn;
@@ -80,39 +86,39 @@ public class Main_1016 {
         for(String key:map.keySet()){
             Collections.sort(map.get(key));
             List<String> list=map.get(key);
-            int flag=1;
-            for(int i=0;i<list.size();i++){
-                String str=list.get(i);
-                if(flag==1&& str.contains("off-line")){
-                    list.remove(i);
-                    i--;
-                }else if(flag==-1 && str.contains("on-line")){
-                    list.remove(i-1);
-                    i--;
-                }else
-                    flag=flag*(-1);
-            }
-            if(list.size()%2==1){
-                list.remove(list.size()-1);
-            }
-        }
-
-        for(String key: map.keySet()){
-            List<String> list=map.get(key);
+            
             String month=list.get(0).split(" ")[0].substring(0,2);
             System.out.println(key+" "+month);
-            int cost=0;
-            for(int i=0;i<list.size();i+=2){
-                String start=list.get(i).split(" ")[0];
-                String end=list.get(i+1).split(" ")[0];
-                node nn=obj.cal_cost(start,end,costs);
-                int total_cost=nn.cost;
-                int total_time=nn.time;
-                cost+=total_cost;
-                System.out.println(start.substring(3)+" "+end.substring(3)+" "+total_time+" $"+String.format("%.2f",total_cost/100.0));
+            float cost=0;
+            for(int i=0;i<list.size();i++){
+            	String str=list.get(i);
+            	if(str.contains("off-line"))
+            		continue;
+            	String str_2="";
+            	while(i<list.size()-1){
+            		str_2=list.get(i+1);
+            		if(str_2.contains("off-line")){
+            			i++;
+            			break;
+            		}else{
+            			str=str_2;
+            		}
+            		i++;
+            	}
+            	
+            	if(str_2.length()>0){
+            		String start=str.split(" ")[0];
+                    String end=str_2.split(" ")[0];
+                    node nn=obj.cal_cost(start,end,costs);
+                    int total_cost=nn.cost;
+                    int total_time=nn.time;
+                    cost+=total_cost;
+                    System.out.println(start.substring(3)+" "+end.substring(3)+" "+total_time+" $"+String.format("%.2f",total_cost/100.0));
+            	}
             }
             System.out.println("Total amount: $"+String.format("%.2f",cost/100.0));
         }
+        
         scan.close();
     }
 }
